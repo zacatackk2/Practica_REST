@@ -16,6 +16,14 @@ app.use(indexRoutes)
 app.use(loginRoutes)
 app.use(usersRoutes)
 
+app.use((err, req, res, next) => {
+    console.log(err.message)
+    if (err.number === 2627) {
+        return res.status(400).json({ mensaje: "ese usuario ya existe" })
+    }
+    res.status(500).json({ mensaje: "error en el servidor" })
+})
+
 const PORT = process.env.PORT || 4000
 
 app.listen(PORT, () => console.log("servidor en http://localhost:" + PORT))

@@ -2,7 +2,7 @@ import { getConnection, sql } from "../utils/db.js"
 
 export const getUsers = async (req, res) => {
     const pool = await getConnection()
-    const result = await pool.request().query("SELECT * FROM Users")
+    const result = await pool.request().query("SELECT id, name, age, points, username FROM Users")
     res.json(result.recordset)
 }
 
@@ -10,7 +10,7 @@ export const getUser = async (req, res) => {
     const pool = await getConnection()
     const result = await pool.request()
         .input("id", sql.Int, req.params.id)
-        .query("SELECT * FROM Users WHERE id = @id")
+        .query("SELECT id, name, age, points, username FROM Users WHERE id = @id")
 
     if (result.recordset.length === 0) {
         return res.status(404).json({ mensaje: "usuario no encontrado" })
